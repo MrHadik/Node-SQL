@@ -18,13 +18,10 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import AddUser from './AddUser';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditUser from './EditUser';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-
-// import '../../App.css'
-
-const style = {
+const style = {                                     //style for model (Add User/Update User)
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -36,7 +33,7 @@ const style = {
     p: 4,
 };
 
-const columns = [
+const columns = [                                   //columns for data table
     { id: 'email', label: 'Email', minWidth: 170, },
     { id: 'name', label: 'Name', minWidth: 130 },
     { id: 'gender', label: 'Gender', minWidth: 70, align: 'center' },
@@ -47,17 +44,19 @@ const columns = [
 ];
 
 export default function Users() {
-    const [temp,setTemp] = useState(0)
-    const [open, setOpen] = useState(false);
-    // const handleOpen = () => { setTemp([]);setOpen(true);};
-    const handleClose = () => setOpen(false);
-    const [Users, setUsers] = useState([])
+    const [open, setOpen] = useState(false);                //for model (add user)
+    const [open2, setOpen2] = useState(false);              // for model (update user)
+    const handleClose = () => {setOpen(false);getList() };  //for model (add user)
+    const handleClose2 = () => {setOpen2(false);getList() };// for model (update user)
+    const [Users, setUsers] = useState([])                  // All User Data
+    const [Temp, setTemp] = useState([])                    // Edit User Data for temp
 
     useEffect(() => {
         getList();
     }, [])
 
-    const getList = async () => {
+//Get list of users From database 
+    const getList = async () => {                           
         let headersList = {
             "Accept": "*/*",
             "User-Agent": "Thunder Client (https://www.thunderclient.com)"
@@ -69,8 +68,16 @@ export default function Users() {
         });
 
         const data = await response.json();
-        setUsers(data)
-        // console.log(data)
+       
+        if(response.statusCode===500){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.message
+            });
+        }else{
+            setUsers(data)
+        }
     }
 
     const [page, setPage] = React.useState(0);
@@ -85,7 +92,8 @@ export default function Users() {
         setPage(0);
     };
 
-    const deleteUser = async (id) => {
+//Delete user from database
+    const deleteUser = async (id) => {                      
         Swal.fire({
             title: "Are you sure? ",
             text: "You won't be able to revert this!",
@@ -119,12 +127,10 @@ export default function Users() {
                         text: data.message
                     });
                     getList()
-
                 }
             }
         });
     };
-
 
     return (
         <>
@@ -136,23 +142,33 @@ export default function Users() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <EditUser open={open}/>
+                        <AddUser Close={handleClose}/>
                         {/* <AddUser id={temp} /> */}
+                    </Box>
+                </Modal>
+                <Modal
+                    open={open2}
+                    onClose={handleClose2}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <EditUser usr={Temp} Close={handleClose2}/>
                     </Box>
                 </Modal>
             </div> 
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <Stack spacing={2} direction="row" >
+                <Stack  direction="row" sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <Typography
-                        gutterBottom
                         variant="h5"
                         component="div"
                         sx={{ padding: "20px" }}
                     >
                         Users List
                     </Typography>
-                    <Button sx={{ padding: "10px" }} onClick={()=>{setTemp(0); setOpen(true)} } variant="outlined" startIcon={<PersonAddIcon />}>Add User</Button>
+                    <Button sx={{  mr:4}} onClick={()=>{ setOpen(true)} } variant="contained" startIcon={<PersonAddIcon />}>Add User</Button>
                 </Stack>
+
                 <Divider />
 
                 <TableContainer sx={{ maxHeight: 440 }}>
@@ -181,7 +197,7 @@ export default function Users() {
                                                     <TableCell key={column.id} align={column.align}>
                                                         {column.format && typeof value === 'number' ? column.format(value) : value}
                                                         {column.id === 'action' && <Stack spacing={2} direction="row">
-                                                            <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer", }} className="cursor-pointer" onClick={() => {setTemp(row.id); setOpen(true)}} />
+                                                            <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer", }} className="cursor-pointer" onClick={() => {setTemp(row); setOpen2(true)}} />
                                                             <DeleteIcon style={{ fontSize: "20px", color: "red", cursor: "pointer", }} onClick={() => { deleteUser(row.id) }} />
                                                         </Stack>}
                                                     </TableCell>
