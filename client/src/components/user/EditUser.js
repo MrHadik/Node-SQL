@@ -7,33 +7,33 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Button from '@mui/material/Button';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Swal from "sweetalert2";
 
 
 
-export default function EditUser({open}) {
+export default function EditUser({ usr, Close }) {            //usr is the user   // Close is for closing model
   const [data, setData] = useState({
-    "email": "",
-    "passwd": "",
-    "name": "",
-    "gender": "",
-    "mobile": 0,
-    "city": "",
-    "address": ""
+    "email": usr.email,
+    "passwd": usr.passwd,
+    "name": usr.name,
+    "gender": usr.gender,
+    "mobile": usr.mobile,
+    "city": usr.city,
+    "address": usr.address
   })
 
   const onChange = (e) => {
     if (e.target.id === '') {
-
       console.log(e.target.value)
       setData({ ...data, ['gender']: e.target.value });
     } else {
 
-      setData({ ...data, [e.target.id]: e.target.type == 'number' ? parseInt(e.target.value) : e.target.value });
+      setData({ ...data, [e.target.id]: e.target.type === 'number' ? parseInt(e.target.value) : e.target.value });
     }
   };
 
+  // For Update User 
   const handelSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,19 +42,19 @@ export default function EditUser({open}) {
       "User-Agent": "Thunder Client (https://www.thunderclient.com)",
       "Content-Type": "application/json"
     }
-    //  console.log(data)
+
     let bodyContent = JSON.stringify(data);
 
-    let response = await fetch("http://localhost:5000/api/user/add", {
-      method: "POST",
+    let response = await fetch("http://localhost:5000/api/user/update", {
+      method: "PUT",
       body: bodyContent,
       headers: headersList
     });
-
+ 
     let getData = await response.json();
-    if (getData.message === "User added successfully") {
-      Swal.fire("Added!", getData.message , "success");
-      open = false;
+    if (getData.message === "User Update successfully") {
+      Close()
+      Swal.fire("Update!", getData.message, "success");
     }
     else {
       Swal.fire({
@@ -62,19 +62,18 @@ export default function EditUser({open}) {
         title: 'Oops...',
         text: getData.message
       });
-
     }
   }
+
   return (
     <div>
-
       <>
         <Typography
           variant="h5"
           align='center'
           sx={{ padding: "20px" }}
         >
-          Add User
+          Edit User
         </Typography>
         <Grid container spacing={2} component="form" onSubmit={handelSubmit}>
           <Grid item xs={12}>
@@ -84,8 +83,7 @@ export default function EditUser({open}) {
               size="small"
               onChange={onChange}
               type="email"
-              // defaultValue={ss.email} //{(formData).length !== 0 ? formData[0].email : 'isis'}
-
+              defaultValue={data.email}
               variant="outlined"
               sx={{ minWidth: '100%' }}
             />
@@ -97,18 +95,17 @@ export default function EditUser({open}) {
               size="small"
               onChange={onChange}
               type="text"
-              // defaultValue={ss.passwd}
+              defaultValue={data.passwd}
               variant="outlined"
               sx={{ minWidth: '100%' }}
             />
           </Grid>
           <Grid item xs={6}>
-
             <TextField required
               id="name"
               label="Name"
               size="small"
-              // defaultValue={ss.name}
+              defaultValue={data.name}
               onChange={onChange}
               type="text"
               variant="outlined"
@@ -120,19 +117,17 @@ export default function EditUser({open}) {
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
-              defaultValue=''
-
+              defaultValue={data.gender}
             >
               <FormControlLabel id='gender' onChange={onChange} value="F" control={<Radio required />} label="Female" />
               <FormControlLabel id='gender' onChange={onChange} value="M" control={<Radio required />} label="Male" />
             </RadioGroup>
           </Grid>
           <Grid item xs={6}>
-
             <TextField required
               id="mobile"
               label="Number"
-              // defaultValue={ss.mobile}
+              defaultValue={data.mobile}
               type="number"
               onChange={onChange}
               size="small"
@@ -140,22 +135,19 @@ export default function EditUser({open}) {
               sx={{ minWidth: '100%' }}
             />
           </Grid>
-
           <Grid item xs={6}>
-
             <TextField required
               id="city"
               onChange={onChange}
               label="City"
               type="text"
-              // defaultValue={ss.city}
+              defaultValue={data.city}
               size="small"
               variant="outlined"
               sx={{ minWidth: '100%' }}
             />
           </Grid>
           <Grid item xs={12}>
-
             <TextField required
               id="address"
               label="Address"
@@ -164,18 +156,16 @@ export default function EditUser({open}) {
               onChange={onChange}
               type="text"
               size="small"
-              // defaultValue={ss.address}
+              defaultValue={data.address}
               variant="outlined"
               sx={{ minWidth: '100%' }}
             />
           </Grid>
           <Grid item xs={12}>
-
             <Button sx={{ padding: "8px", minWidth: '100%' }} type='submit' size='small' variant="contained" startIcon={<PersonAddIcon />}>Add User</Button>
           </Grid>
         </Grid>
       </>
-
     </div>
   );
 }
