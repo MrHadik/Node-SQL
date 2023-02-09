@@ -19,6 +19,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import AddUser from './AddUser';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EditUser from './EditUser';
 
 
 // import '../../App.css'
@@ -46,8 +47,9 @@ const columns = [
 ];
 
 export default function Users() {
+    const [temp,setTemp] = useState(0)
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    // const handleOpen = () => { setTemp([]);setOpen(true);};
     const handleClose = () => setOpen(false);
     const [Users, setUsers] = useState([])
 
@@ -68,7 +70,7 @@ export default function Users() {
 
         const data = await response.json();
         setUsers(data)
-        console.log(data)
+        // console.log(data)
     }
 
     const [page, setPage] = React.useState(0);
@@ -123,22 +125,6 @@ export default function Users() {
         });
     };
 
-    const [temp,setTemp] = useState([])
-    const editUser = async (id) => {
-        // console.log('edit ' + id)
-        let headersList = {
-            "Accept": "*/*",
-            "User-Agent": "Thunder Client (https://www.thunderclient.com)"
-        }
-        let response = await fetch(`http://localhost:5000/api/user/${id}`, {
-            method: "GET",
-            headers: headersList
-        });
-        let data = await response.json()
-        setTemp(JSON.stringify(data))
-        setOpen(true)
-        // console.log(JSON.stringify(temp));
-    };
 
     return (
         <>
@@ -150,7 +136,8 @@ export default function Users() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <AddUser US={temp} />
+                        <EditUser open={open}/>
+                        {/* <AddUser id={temp} /> */}
                     </Box>
                 </Modal>
             </div> 
@@ -164,7 +151,7 @@ export default function Users() {
                     >
                         Users List
                     </Typography>
-                    <Button sx={{ padding: "10px" }} onClick={handleOpen} variant="outlined" startIcon={<PersonAddIcon />}>Add User</Button>
+                    <Button sx={{ padding: "10px" }} onClick={()=>{setTemp(0); setOpen(true)} } variant="outlined" startIcon={<PersonAddIcon />}>Add User</Button>
                 </Stack>
                 <Divider />
 
@@ -194,7 +181,7 @@ export default function Users() {
                                                     <TableCell key={column.id} align={column.align}>
                                                         {column.format && typeof value === 'number' ? column.format(value) : value}
                                                         {column.id === 'action' && <Stack spacing={2} direction="row">
-                                                            <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer", }} className="cursor-pointer" onClick={() => editUser(row.id)} />
+                                                            <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer", }} className="cursor-pointer" onClick={() => {setTemp(row.id); setOpen(true)}} />
                                                             <DeleteIcon style={{ fontSize: "20px", color: "red", cursor: "pointer", }} onClick={() => { deleteUser(row.id) }} />
                                                         </Stack>}
                                                     </TableCell>

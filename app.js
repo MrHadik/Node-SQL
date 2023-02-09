@@ -84,7 +84,7 @@ app.post('/api/user/add', (req, res) => {
         connection.query('SELECT * FROM users WHERE email = ?', [pera.email], (err, rows) => {
             if (err) throw err;
             if (rows.length !== 0) {
-                res.status(404);
+                res.status(400);
                 res.send({ message: `User Already in Database` })
             } else {
                 connection.query('INSERT INTO users SET ?', pera, (err, rows) => {
