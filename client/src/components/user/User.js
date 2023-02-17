@@ -26,9 +26,9 @@ const style = {                                     //style for model (Add User/
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    width: 600,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    // border: '1px solid #52578',
     boxShadow: 24,
     p: 4,
 };
