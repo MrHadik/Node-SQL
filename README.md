@@ -2,7 +2,7 @@
 
 # Node-SQL
 
-Node-SQL is simple CRUD opration using Node.js as backend and for database used phpmyadmin
+Node-SQL is simple CRUD operation using Node.js as backend and for database used phpmyadmin
 
 
 
