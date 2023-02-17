@@ -13,6 +13,7 @@ app.listen(port, () => { console.log(`Server listening on http://localhost:${por
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
+    port: 3306,
     user: 'root',
     password: '',
     database: 'node-sql'
@@ -107,10 +108,20 @@ app.put('/api/user/update', (req, res) => {
     pool.getConnection((err, connection) => {
         try {
             const pera = req.body;
-            connection.query('UPDATE users SET ? WHERE users.email = ? ', [pera, pera.email], (err, rows) => {
-                res.status(200).send({ message: 'User Update successfully', User: pera })
-                connection.release()
+            connection.query('SELECT * FROM users WHERE email = ?', [pera.email], (err, rows) => {
+                if (rows.length === 0) {
+                    res.status(400);
+                    res.send({ message: `user not found` })
+                } else {
+                    connection.query('UPDATE users SET ? WHERE users.email = ? ', [pera, pera.email], (err, rows) => {
+                        res.status(200).send({ message: 'User Update successfully', User: pera })
+                        connection.release()
+                    })
+                }
             })
+
+
+            
         } catch (error) {
             res.status(500).send({ message: error.message });
         }
