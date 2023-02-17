@@ -1,70 +1,144 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Node-SQL
 
-In the project directory, you can run:
+Node-SQL is simple CRUD opration using Node.js as backend and for database used phpmyadmin
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Screenshots
 
-### `npm test`
+### Home
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Home](https://user-images.githubusercontent.com/74814143/219609037-64d6f4dc-d821-4795-8245-bd909dc80d8f.png)
 
-### `npm run build`
+### Add User
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Add User](https://user-images.githubusercontent.com/74814143/219609310-7d014e50-b422-49cd-8bb4-bbadca8892e1.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![App User Box](https://user-images.githubusercontent.com/74814143/219610681-ad590cf4-15e9-4dca-ac6b-7eefef4416b3.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Edit User
 
-### `npm run eject`
+![Edit User](https://user-images.githubusercontent.com/74814143/219609488-4be0f742-30d4-460a-8a69-a6cd11f867cf.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![Updated box](https://user-images.githubusercontent.com/74814143/219609790-7099f88f-096b-477e-b71d-45dd221a6879.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Delete User
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![App Screenshot](https://user-images.githubusercontent.com/74814143/219610226-4c60c0bc-dedb-4ec0-b2a5-06a35c9cabe7.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Tech Stack
 
-### Code Splitting
+**Client:** React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Server:** Node, Express
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## Run Locally
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Clone the project
 
-### Advanced Configuration
+```bash
+  git clone https://github.com/MrHadik/Node-SQL.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Go to the project directory for Backend
 
-### Deployment
+```bash
+  cd Node-SQL
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Install dependencies
 
-### `npm run build` fails to minify
+```bash
+  npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Start the server
+
+```bash
+  npm run start
+```
+Go to the project directory for Front end 
+
+```bash
+  cd Node-SQL/client
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+## API Reference
+
+#### Get all Users
+
+```http
+  GET /api/users
+```
+#### Get Single User
+
+```http
+  GET /api/user/${id} 
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `numbers` | **Required**. Id of user to user |
+
+
+#### Add Single User 
+
+```http
+  POST /api/user/add
+```
+
+| Body   | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- | 
+| `email`   | `string` | **Required**. email of user to add user | 
+| `passwd`      | `string` | **Required**. password of user to add user |
+| `name`      | `string` | **Required**. name of user to add user |
+| `gender`      | `string` | **Required**. gender of user to add user |
+| `mobile`      | `numbers` | **Required**. mobile of user to add user |
+| `city`      | `string` | **Required**. city of user to add user |
+| `address`      | `string` | **Required**. address of user to add user |
+
+
+#### Delete Single User
+
+```http
+  DELETE /api/user/delete/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `numbers` | **Required**. Id of user to delete |
+
+#### Update Single User 
+
+```http
+  PUT /api/user/update
+```
+
+| Body   | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- | 
+| `email`   | `string` | **Required**. email of user to add user | 
+| `passwd`      | `string` | **Required**. password of user to add user |
+| `name`      | `string` | **Required**. name of user to add user |
+| `gender`      | `string` | **Required**. gender of user to add user |
+| `mobile`      | `numbers` | **Required**. mobile of user to add user |
+| `city`      | `string` | **Required**. city of user to add user |
+| `address`      | `string` | **Required**. address of user to add user |
