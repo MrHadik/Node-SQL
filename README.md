@@ -1,9 +1,6 @@
-
-
 # Node-SQL
 
 Node-SQL is simple CRUD operation using Node.js as backend and for database used phpmyadmin
-
 
 
 ## Screenshots
@@ -12,11 +9,13 @@ Node-SQL is simple CRUD operation using Node.js as backend and for database used
 
 ![Home](https://user-images.githubusercontent.com/74814143/219609037-64d6f4dc-d821-4795-8245-bd909dc80d8f.png)
 
+
 ### Add User
 
 ![Add User](https://user-images.githubusercontent.com/74814143/219609310-7d014e50-b422-49cd-8bb4-bbadca8892e1.png)
 
 ![App User Box](https://user-images.githubusercontent.com/74814143/219610681-ad590cf4-15e9-4dca-ac6b-7eefef4416b3.png)
+
 
 ### Edit User
 
@@ -24,11 +23,15 @@ Node-SQL is simple CRUD operation using Node.js as backend and for database used
 
 ![Updated box](https://user-images.githubusercontent.com/74814143/219609790-7099f88f-096b-477e-b71d-45dd221a6879.png)
 
+
 ### Delete User
 
-![App Screenshot](https://user-images.githubusercontent.com/74814143/219610226-4c60c0bc-dedb-4ec0-b2a5-06a35c9cabe7.png)
+![Delete User](https://user-images.githubusercontent.com/74814143/219610226-4c60c0bc-dedb-4ec0-b2a5-06a35c9cabe7.png)
 
 
+### Database
+
+![Database](https://user-images.githubusercontent.com/74814143/219619422-e9816b22-9f2f-4973-863c-b298f01ba0e1.png)
 
 
 ## Tech Stack
@@ -36,7 +39,6 @@ Node-SQL is simple CRUD operation using Node.js as backend and for database used
 **Client:** React
 
 **Server:** Node, Express
-
 
 
 ## Run Locally
