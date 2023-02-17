@@ -21,14 +21,12 @@ export default function EditUser({ usr, Close }) {            //usr is the user 
     "mobile": usr.mobile,
     "city": usr.city,
     "address": usr.address
-  })
+  });
 
   const onChange = (e) => {
     if (e.target.id === '') {
-      console.log(e.target.value)
       setData({ ...data, ['gender']: e.target.value });
     } else {
-
       setData({ ...data, [e.target.id]: e.target.type === 'number' ? parseInt(e.target.value) : e.target.value });
     }
   };
@@ -53,10 +51,11 @@ export default function EditUser({ usr, Close }) {            //usr is the user 
  
     let getData = await response.json();
     if (getData.message === "User Update successfully") {
-      Close()
+      Close();
       Swal.fire("Update!", getData.message, "success");
     }
     else {
+      Close();
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -79,6 +78,7 @@ export default function EditUser({ usr, Close }) {            //usr is the user 
           <Grid item xs={12}>
             <TextField required
               id="email"
+              disabled
               label="Email"
               size="small"
               onChange={onChange}
@@ -119,8 +119,9 @@ export default function EditUser({ usr, Close }) {            //usr is the user 
               name="row-radio-buttons-group"
               defaultValue={data.gender}
             >
-              <FormControlLabel id='gender' onChange={onChange} value="F" control={<Radio required />} label="Female" />
-              <FormControlLabel id='gender' onChange={onChange} value="M" control={<Radio required />} label="Male" />
+              <FormControlLabel id='gender' onChange={onChange} value="Male" control={<Radio required size='small'/>} label="Male" />
+              <FormControlLabel id='gender' onChange={onChange}  value="Female" control={<Radio required size='small'/>} label="Female" />
+              <FormControlLabel id='gender' onChange={onChange} value="other" control={<Radio required size='small'/>} label="other" />
             </RadioGroup>
           </Grid>
           <Grid item xs={6}>
@@ -168,4 +169,4 @@ export default function EditUser({ usr, Close }) {            //usr is the user 
       </>
     </div>
   );
-}
+};

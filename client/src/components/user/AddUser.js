@@ -9,7 +9,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Swal from "sweetalert2";
-
+import { Box } from '@mui/system';
 
 
 export default function EditUser({Close}) {
@@ -66,9 +66,8 @@ export default function EditUser({Close}) {
     }
   }
   return (
-    <div>
-
       <>
+      <Box sx={{flexWrap: 'wrap'}}>
         <Typography
           variant="h5"
           align='center'
@@ -123,8 +122,10 @@ export default function EditUser({Close}) {
               defaultValue=''
 
             >
-              <FormControlLabel id='gender' onChange={onChange} value="F" control={<Radio required />} label="Female" />
-              <FormControlLabel id='gender' onChange={onChange} value="M" control={<Radio required />} label="Male" />
+              <FormControlLabel id='gender' onChange={onChange} value="Female" control={<Radio required size='small'/>} label="Female" />
+              <FormControlLabel id='gender' onChange={onChange} value="Male" control={<Radio required size='small'/>} label="Male" />
+              <FormControlLabel id='gender' onChange={onChange} value="other" control={<Radio required size='small'/>} label="other" />
+
             </RadioGroup>
           </Grid>
           <Grid item xs={6}>
@@ -174,8 +175,8 @@ export default function EditUser({Close}) {
             <Button sx={{ padding: "8px", minWidth: '100%' }} type='submit' size='small' variant="contained" startIcon={<PersonAddIcon />}>Add User</Button>
           </Grid>
         </Grid>
+        </Box>
       </>
 
-    </div>
   );
 }
