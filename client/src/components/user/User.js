@@ -5,7 +5,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -28,7 +27,6 @@ const style = {                                     //style for model (Add User/
     transform: 'translate(-50%, -50%)',
     width: 600,
     bgcolor: 'background.paper',
-    // border: '1px solid #52578',
     boxShadow: 24,
     p: 4,
 };
@@ -46,17 +44,28 @@ const columns = [                                   //columns for data table
 export default function Users() {
     const [open, setOpen] = useState(false);                //for model (add user)
     const [open2, setOpen2] = useState(false);              // for model (update user)
-    const handleClose = () => {setOpen(false);getList() };  //for model (add user)
-    const handleClose2 = () => {setOpen2(false);getList() };// for model (update user)
-    const [Users, setUsers] = useState([])                  // All User Data
+    const handleClose = () => { setOpen(false); getList() };  //for model (add user)
+    const handleClose2 = () => { setOpen2(false); getList() };// for model (update user)
+    const [Users, setUsers] = useState([{
+        "id": 0,
+        "email": "",
+        "passwd": "",
+        "name": "",
+        "gender": "",
+        "mobile": "No Data",
+        "city": "",
+        "address": ""
+    }])
     const [Temp, setTemp] = useState([])                    // Edit User Data for temp
+    const [database , setDatabase] = useState(true);
 
     useEffect(() => {
         getList();
     }, [])
 
-//Get list of users From database 
-    const getList = async () => {                           
+    //Get list of users From database 
+    const getList = async () => {
+
         let headersList = {
             "Accept": "*/*",
             "User-Agent": "Thunder Client (https://www.thunderclient.com)"
@@ -68,32 +77,40 @@ export default function Users() {
         });
 
         const data = await response.json();
-       
-        if(response.statusCode===500){
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: data.message
-            });
-        }else{
+        console.log(data);
+        if (response.status === 200 && data.length !== 0) {
             setUsers(data)
+            setDatabase(false)
+        }else if (data.message !== "Cannot read properties of undefined (reading 'query'") {
+            setDatabase(true)
+            setUsers([{
+                "id": 0,
+                "email": "",
+                "passwd": "",
+                "name": "",
+                "gender": "",
+                "mobile": "No Data",
+                "city": "",
+                "address": ""
+            }])
         }
+
+        // if (data.length === 0) {
+        //     setUsers([{
+        //         "id": 0,
+        //         "email": "",
+        //         "passwd": "",
+        //         "name": "",
+        //         "gender": "",
+        //         "mobile": "No Data",
+        //         "city": "",
+        //         "address": ""
+        //     }])
+        // }
     }
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-//Delete user from database
-    const deleteUser = async (id) => {                      
+    //Delete user from database
+    const deleteUser = async (id) => {
         Swal.fire({
             title: "Are you sure? ",
             text: "You won't be able to revert this!",
@@ -142,8 +159,7 @@ export default function Users() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <AddUser Close={handleClose}/>
-                        {/* <AddUser id={temp} /> */}
+                        <AddUser Close={handleClose} />
                     </Box>
                 </Modal>
                 <Modal
@@ -153,12 +169,12 @@ export default function Users() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <EditUser usr={Temp} Close={handleClose2}/>
+                        <EditUser usr={Temp} Close={handleClose2} />
                     </Box>
                 </Modal>
-            </div> 
+            </div>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <Stack  direction="row" sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Typography
                         variant="h5"
                         component="div"
@@ -166,7 +182,7 @@ export default function Users() {
                     >
                         Users List
                     </Typography>
-                    <Button sx={{  mr:4}} onClick={()=>{ setOpen(true)} } variant="contained" startIcon={<PersonAddIcon />}>Add User</Button>
+                    <Button sx={{ mr: 4 }} onClick={() => { setOpen(true) }} /*disabled={database}*/  variant="contained" startIcon={<PersonAddIcon />}>Add User</Button>
                 </Stack>
 
                 <Divider />
@@ -174,7 +190,7 @@ export default function Users() {
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
-                            <TableRow>
+                            <TableRow >
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.id}
@@ -187,37 +203,31 @@ export default function Users() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
-                                Users.map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                                                        {column.id === 'action' && <Stack spacing={2} direction="row">
-                                                            <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer", }} className="cursor-pointer" onClick={() => {setTemp(row); setOpen2(true)}} />
-                                                            <DeleteIcon style={{ fontSize: "20px", color: "red", cursor: "pointer", }} onClick={() => { deleteUser(row.id) }} />
-                                                        </Stack>}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
+
+                            {Users.map((row) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell size='small' key={column.id} align={column.align}>
+                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                    {column.id === 'action' && row.id !== 0 && <Stack spacing={2} direction="row">
+                                                        <EditIcon style={{ fontSize: "20px", color: "blue", cursor: "pointer", }} className="cursor-pointer" onClick={() => { setTemp(row); setOpen2(true) }} />
+                                                        <DeleteIcon style={{ fontSize: "20px", color: "red", cursor: "pointer", }} onClick={() => { deleteUser(row.id) }} />
+                                                    </Stack>}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                );
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={Users.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                <Typography component="div" align='right' sx={{m:1, pr:6}}>
+                    Count {Users[0].id === 0 ? 0 :Users.length }
+                </Typography>
             </Paper>
         </>
     );

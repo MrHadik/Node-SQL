@@ -5,14 +5,14 @@ import Grid from '@mui/material/Grid';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Swal from "sweetalert2";
 
 
 
-export default function EditUser({ usr, Close }) {            //usr is the user   // Close is for closing model
+export default function EditUser({ usr, Close }) {            //usr is for the user Data  // Close is for closing model
   const [data, setData] = useState({
     "email": usr.email,
     "passwd": usr.passwd,
@@ -163,7 +163,7 @@ export default function EditUser({ usr, Close }) {            //usr is the user 
             />
           </Grid>
           <Grid item xs={12}>
-            <Button sx={{ padding: "8px", minWidth: '100%' }} type='submit' size='small' variant="contained" startIcon={<PersonAddIcon />}>Add User</Button>
+            <Button sx={{ padding: "8px", minWidth: '100%' }} type='submit' size='small' variant="contained" startIcon={<PlaylistAddCheckIcon />}>Update User</Button>
           </Grid>
         </Grid>
       </>
