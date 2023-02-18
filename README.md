@@ -40,6 +40,19 @@ Node-SQL is simple CRUD operation using Node.js as backend and for database used
 
 **Server:** Node, Express
 
+## Tech Stack
+
+**Client:** React
+
+**Server:** Node, Express
+
+## Technologies
+
+Project is created with:
+
+- Context API
+- React Hooks
+- MUI
 
 ## Run Locally
 
